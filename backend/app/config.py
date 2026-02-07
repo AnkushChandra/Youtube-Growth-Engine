@@ -21,7 +21,7 @@ class Settings:
     composio_user_id: str = os.getenv('COMPOSIO_USER_ID', 'default')
     gemini_api_key: str | None = os.getenv('GEMINI_API_KEY')
     gemini_model: str = os.getenv('GEMINI_MODEL', 'gemini-3-flash-preview')
-    db_path: Path = DATA_DIR / 'data.db'
+    database_url: str = os.getenv('DATABASE_URL', '')
     memory_file: Path = MEMORY_FILE
     max_memory_lines: int = int(os.getenv('MEMORY_MAX_LINES', '20'))
     rate_limit_per_min: int = int(os.getenv('RATE_LIMIT_PER_MIN', '60'))

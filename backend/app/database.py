@@ -1,31 +1,30 @@
 from __future__ import annotations
 
-import sqlite3
 from contextlib import contextmanager
-from pathlib import Path
 from typing import Any, Iterable
+
+import psycopg2
+import psycopg2.extras
 
 from .config import settings
 
-DB_PATH: Path = settings.db_path
+DATABASE_URL: str = settings.database_url
 
 
 def init_db() -> None:
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.execute('PRAGMA foreign_keys = ON;')
-        conn.executescript(
-            """
+    with _raw_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
             CREATE TABLE IF NOT EXISTS channels (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 channel_url TEXT UNIQUE NOT NULL,
                 channel_id TEXT,
                 title TEXT,
-                last_checked DATETIME
+                last_checked TIMESTAMP
             );
 
             CREATE TABLE IF NOT EXISTS videos (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 channel_id INTEGER NOT NULL REFERENCES channels(id) ON DELETE CASCADE,
                 video_id TEXT UNIQUE NOT NULL,
                 title TEXT,
@@ -35,21 +34,21 @@ def init_db() -> None:
                 comments INTEGER,
                 thumbnail_url TEXT,
                 captions TEXT,
-                fetched_at DATETIME,
+                fetched_at TIMESTAMP,
                 performance_score REAL
             );
 
             CREATE TABLE IF NOT EXISTS analyses (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 channel_id INTEGER NOT NULL REFERENCES channels(id) ON DELETE CASCADE,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 summary TEXT,
                 strategy TEXT
             );
 
             CREATE TABLE IF NOT EXISTS batch_history (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                id SERIAL PRIMARY KEY,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 channel_urls TEXT NOT NULL,
                 channels_json TEXT NOT NULL,
                 strategy_json TEXT NOT NULL,
@@ -69,7 +68,7 @@ def init_db() -> None:
             );
 
             CREATE TABLE IF NOT EXISTS suggestion_matches (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 suggestion_id TEXT NOT NULL,
                 channel_id TEXT,
                 video_id TEXT NOT NULL,
@@ -84,40 +83,54 @@ def init_db() -> None:
             );
 
             CREATE TABLE IF NOT EXISTS learning_insights (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 created_at TEXT NOT NULL,
                 insight_text TEXT NOT NULL,
                 evidence TEXT NOT NULL DEFAULT '{}'
             );
-            """
-        )
+            """)
+        conn.commit()
+
+
+def _raw_connection():
+    """Create a raw psycopg2 connection."""
+    return psycopg2.connect(DATABASE_URL)
 
 
 @contextmanager
-def get_connection() -> Iterable[sqlite3.Connection]:
-    conn = sqlite3.connect(DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
-    conn.row_factory = sqlite3.Row
+def get_connection():
+    conn = psycopg2.connect(DATABASE_URL)
+    conn.autocommit = False
     try:
         yield conn
     finally:
         conn.close()
 
 
-def query_one(query: str, params: Iterable[Any] | dict[str, Any] = ()):  # type: ignore[type-var]
+def query_one(query: str, params: tuple | dict = ()):
     with get_connection() as conn:
-        cur = conn.execute(query, params)
-        row = cur.fetchone()
-        return dict(row) if row else None
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            cur.execute(query, params)
+            row = cur.fetchone()
+            return dict(row) if row else None
 
 
-def query_all(query: str, params: Iterable[Any] | dict[str, Any] = ()):  # type: ignore[type-var]
+def query_all(query: str, params: tuple | dict = ()):
     with get_connection() as conn:
-        cur = conn.execute(query, params)
-        return [dict(row) for row in cur.fetchall()]
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            cur.execute(query, params)
+            return [dict(row) for row in cur.fetchall()]
 
 
-def execute(query: str, params: Iterable[Any] | dict[str, Any] = ()):  # type: ignore[type-var]
+def execute(query: str, params: tuple | dict = ()):
     with get_connection() as conn:
-        cur = conn.execute(query, params)
-        conn.commit()
-        return cur.lastrowid
+        with conn.cursor() as cur:
+            cur.execute(query, params)
+            # Try to get lastrowid via RETURNING, otherwise return rowcount
+            try:
+                row = cur.fetchone()
+                conn.commit()
+                return row[0] if row else None
+            except psycopg2.ProgrammingError:
+                conn.commit()
+                return cur.rowcount

@@ -6,3 +6,4 @@ pydantic
 google-genai
 composio
 composio-gemini
+psycopg2-binary
