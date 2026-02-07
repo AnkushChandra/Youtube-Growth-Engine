@@ -19,7 +19,7 @@ class ChannelResponse(BaseModel):
     channel_url: str
     channel_id: Optional[str] = None
     title: Optional[str] = None
-    last_checked: Optional[str] = None
+    last_checked: Optional[str | datetime] = None
 
 
 class AnalyzeChannelRequest(BaseModel):
@@ -37,7 +37,7 @@ class VideoResponse(BaseModel):
     comments: Optional[int]
     thumbnail_url: Optional[str] = None
     captions: Optional[str]
-    fetched_at: Optional[str]
+    fetched_at: Optional[str | datetime]
     performance_score: Optional[float]
 
 
@@ -147,13 +147,13 @@ class ThumbnailResponse(BaseModel):
 
 class BatchHistoryListItem(BaseModel):
     id: int
-    created_at: str
+    created_at: str | datetime
     channel_urls: List[str] = []
 
 
 class BatchHistoryDetail(BaseModel):
     id: int
-    created_at: str
+    created_at: str | datetime
     channel_urls: List[str] = []
     channels: List[ChannelSummary] = []
     strategy: CrossChannelStrategy
@@ -162,7 +162,7 @@ class BatchHistoryDetail(BaseModel):
 
 class LearningInsightResponse(BaseModel):
     id: int
-    created_at: str
+    created_at: str | datetime
     insight_text: str
     evidence: Optional[Dict[str, Any]] = None
 
@@ -174,7 +174,7 @@ class SuggestionMatchResponse(BaseModel):
     channel_id: Optional[str] = None
     video_id: str
     video_title: Optional[str] = None
-    matched_at: str
+    matched_at: str | datetime
     match_confidence: float = 0.0
     views: Optional[int] = None
     avg_views: Optional[float] = None
