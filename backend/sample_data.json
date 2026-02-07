@@ -1,0 +1,109 @@
+{
+  "channel": {
+    "channelId": "UC-9-kyTW8ZkZNDHQJ6FgpwQ",
+    "title": "Sample Music Channel",
+    "url": "https://www.youtube.com/@samplemusic"
+  },
+  "videos": [
+    {
+      "videoId": "vid001",
+      "title": "Top 10 Guitar Riffs You Must Learn",
+      "publishedAt": "2024-01-15T15:00:00Z",
+      "views": 250000,
+      "likes": 15000,
+      "comments": 1200,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid001/maxresdefault.jpg",
+      "captions": "Welcome back! Today we're counting down the top 10 guitar riffs..."
+    },
+    {
+      "videoId": "vid002",
+      "title": "Can You Guess These 5 Drum Patterns?",
+      "publishedAt": "2024-01-09T18:00:00Z",
+      "views": 180000,
+      "likes": 9000,
+      "comments": 800,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid002/maxresdefault.jpg",
+      "captions": "What happens if you mix jazz with metal? In the first 30 seconds..."
+    },
+    {
+      "videoId": "vid003",
+      "title": "Why This Chord Progression Works Every Time",
+      "publishedAt": "2023-12-30T17:00:00Z",
+      "views": 450000,
+      "likes": 23000,
+      "comments": 2100,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid003/maxresdefault.jpg",
+      "captions": "Why does this four chord loop sound so satisfying? Let me show you..."
+    },
+    {
+      "videoId": "vid004",
+      "title": "I Tried Writing a Song in 60 Seconds",
+      "publishedAt": "2023-12-22T12:00:00Z",
+      "views": 90000,
+      "likes": 4000,
+      "comments": 350,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid004/maxresdefault.jpg",
+      "captions": "You won't believe how this turns out in just one minute..."
+    },
+    {
+      "videoId": "vid005",
+      "title": "What Happens If You Reverse Pop Songs?",
+      "publishedAt": "2023-12-15T10:00:00Z",
+      "views": 120000,
+      "likes": 6000,
+      "comments": 500,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid005/maxresdefault.jpg",
+      "captions": "What if we reverse the hook? In the next 30 seconds you'll hear..."
+    },
+    {
+      "videoId": "vid006",
+      "title": "7 Songwriting Mistakes Keeping You Stuck",
+      "publishedAt": "2023-12-07T09:00:00Z",
+      "views": 160000,
+      "likes": 8000,
+      "comments": 650,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid006/maxresdefault.jpg",
+      "captions": "Here are seven mistakes—and why your chorus still feels flat..."
+    },
+    {
+      "videoId": "vid007",
+      "title": "How to Make Hooks People Remember",
+      "publishedAt": "2023-11-29T20:00:00Z",
+      "views": 275000,
+      "likes": 14000,
+      "comments": 1000,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid007/maxresdefault.jpg",
+      "captions": "How do you craft a sticky hook? Start with a question..."
+    },
+    {
+      "videoId": "vid008",
+      "title": "We Wrote a Hit Using Only 4 Chords",
+      "publishedAt": "2023-11-22T14:00:00Z",
+      "views": 320000,
+      "likes": 17000,
+      "comments": 1400,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid008/maxresdefault.jpg",
+      "captions": "You won't believe how fast this hook comes together..."
+    },
+    {
+      "videoId": "vid009",
+      "title": "Can AI Write Better Lyrics Than You?",
+      "publishedAt": "2023-11-14T13:00:00Z",
+      "views": 210000,
+      "likes": 11000,
+      "comments": 900,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid009/maxresdefault.jpg",
+      "captions": "Can an algorithm beat your chorus? Let's find out..."
+    },
+    {
+      "videoId": "vid010",
+      "title": "Stop Writing Boring Bridges (Do This)",
+      "publishedAt": "2023-11-05T11:00:00Z",
+      "views": 130000,
+      "likes": 7000,
+      "comments": 600,
+      "thumbnailUrl": "https://img.youtube.com/vi/vid010/maxresdefault.jpg",
+      "captions": "In 30 seconds you'll know how to make your bridge explode..."
+    }
+  ]
+}

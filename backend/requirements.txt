@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+python-dotenv==1.0.1
+httpx==0.26.0
+pydantic
+google-genai
+composio
+composio-gemini

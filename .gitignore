@@ -1,0 +1,11 @@
+backup
+.env
+memory.txt
+data.db
+backend/agent_debug.log
+backend/venv/
+frontend/node_modules/
+frontend/dist/
+__pycache__/
+*.pyc
+.DS_Store
